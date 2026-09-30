@@ -8,9 +8,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useTheme } from '../context/ThemeContext';
 const HomeScreen = () => {
     const [searchText, setSearchText] = useState('');
-    const {theme,toggleTheme} = useTheme();
+    const {theme,palette,toggleTheme} = useTheme();
+
+    // LẤY MÀU HIỆN TẠI VÀ TẠO STYLE BẰNG USEMEMO
+    const styles = useMemo(() => getStyles(palette) , [palette]);
     return (
-        <ScrollView style = {theme === "light" ? styles.containerLight : styles.containerDark} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator = {false}>
+        <ScrollView style = {styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator = {false}>
             {/* HEADER */}
             <View style = {styles.header}>
                 <View>
@@ -119,14 +122,10 @@ const HomeScreen = () => {
     );
 };
 
-const styles = StyleSheet.create({
-  containerLight: {
-   flex: 1, 
-   backgroundColor: '#F5F7FB',
-  },
-  containerDark:{
-    flex: 1, 
-    backgroundColor: '#111827',
+const getStyles = (colors : any) => StyleSheet.create({
+  container : {
+    flex : 1 ,
+    backgroundColor : colors.background,
   },
   contentContainer : {
     paddingHorizontal: 20, 
@@ -142,13 +141,13 @@ const styles = StyleSheet.create({
   },
   greetingText : {
     fontSize: 16,
-    color: '#475569',
+    color: colors.textSub,
     marginBottom: 4,
   },
   userName : {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#0F172A',
+    color: colors.textMain,
   },
   headerRight:{
     flexDirection: 'row', 
@@ -159,11 +158,11 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 12,
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 4,
@@ -173,11 +172,11 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
-    shadowColor: '#000',
+    marginLeft: 12,
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 4,
@@ -210,7 +209,7 @@ const styles = StyleSheet.create({
   sectionTitle : {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1E293B',
+    color: colors.textMain,
     marginBottom: 12,
     letterSpacing: 0.5,
   },
@@ -222,13 +221,13 @@ const styles = StyleSheet.create({
   },
   statCard : {
     flex : 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius: 16,
     paddingVertical: 14,
     paddingHorizontal: 8,
     marginHorizontal: 4,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 6,
@@ -248,12 +247,12 @@ const styles = StyleSheet.create({
   statValue : {
     fontSize : 20,
     fontWeight : 'bold',
-    color: "0F172A",
+    color: colors.textMain,
     marginBottom : 2,
   },
   statLabel : {
     fontSize : 12,
-    color: '#64748B',
+    color: colors.textSub,
     textAlign: 'center',
   },
 
@@ -267,10 +266,10 @@ const styles = StyleSheet.create({
     flex : 1 ,
     flexDirection : 'row',
     alignItems : 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius : 24,
     paddingHorizontal : 16,
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     height : 48,
     shadowOffset : {width : 0 , height : 2},
     shadowOpacity : 0.04,
@@ -284,17 +283,17 @@ const styles = StyleSheet.create({
   searchInput : {
     flex : 1 , 
     fontSize : 14,
-    color: '#1E293B',
+    color: colors.shadow,
   },
   filterButton : {
     width : 48, 
     height : 48 ,
     borderRadius : 24,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     justifyContent : 'center',
     alignItems : 'center',
     marginLeft : 12,
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset : {width : 0 , height : 2},
     shadowOpacity : 0.04,
     shadowRadius: 5,
@@ -311,11 +310,11 @@ const styles = StyleSheet.create({
   courseCard : {
     flexDirection : 'row',
     alignItems : 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.cardBg,
     borderRadius : 18,
     padding : 14,
     marginBottom : 14,
-    shadowColor: '#000',
+    shadowColor: colors.shadow,
     shadowOffset : {width : 0 , height : 3},
     shadowOpacity : 0.06,
     shadowRadius: 6,
@@ -338,7 +337,7 @@ const styles = StyleSheet.create({
   courseName : {
     fontSize : 16,
     fontWeight : '700',
-    color: '#0F172A',
+    color: colors.textMain,
     marginBottom: 6,
   },
   courseMetaRow: {
@@ -348,7 +347,7 @@ const styles = StyleSheet.create({
   },
   courseMetaText: {
     fontSize: 13,
-    color: '#475569',
+    color: colors.textSub,
   },
   progressBarBackground: {
     height: 7,

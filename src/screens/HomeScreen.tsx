@@ -1,113 +1,132 @@
 import React , {useMemo , useState} from 'react';
-import {View, Text, StyleSheet, Image,ScrollView, TextInput, TouchableOpacity,Pressable} from 'react-native';
+import {View, Text, StyleSheet, Image,ScrollView, TextInput, TouchableOpacity,Pressable , FlatList, Button} from 'react-native';
 import courses from '../data/courseData';
 import statsData from '../data/statsData';
 import { SearchBar } from 'react-native-screens';
-
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTheme } from '../context/ThemeContext';
 const HomeScreen = () => {
     const [searchText, setSearchText] = useState('');
-  return (
-    <ScrollView style = {styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator = {false}>
-        {/* header */}
-        <View style = {styles.header}>
-            <View>
-                <Text style = {styles.greetingText} > Xin chào,</Text>
-                <Text style = {styles.userName}>Phạm Tiến Công</Text>
+    const {theme,toggleTheme} = useTheme();
+    return (
+        <ScrollView style = {theme === "light" ? styles.containerLight : styles.containerDark} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator = {false}>
+            {/* HEADER */}
+            <View style = {styles.header}>
+                <View>
+                    <Text style = {styles.greetingText} > Xin chào,</Text>
+                    <Text style = {styles.userName}>Phạm Tiến Công</Text>
+                </View>
+                <View style = {styles.headerRight}>
+                    <TouchableOpacity onPress={toggleTheme} style = {styles.themeBtn}>
+                        <Ionicons
+                            name={theme === "light" ? "moon-outline" : "sunny-outline"} // đổi icon theo theme
+                            size={28}
+                            color={theme === "light" ? "#111827" : "#FFD700"}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity style ={ styles.noticationBtn}>
+                        <Ionicons
+                            name="notifications"
+                            size={26}
+                            color="#e4de1b"
+                        />
+                        <View style={styles.notificationBadge}> <Text style={styles.notificationBadgeText}>3</Text> </View>
+                    </TouchableOpacity>
+                    <Image source={require('../assets/image/user.jpg')} style={styles.avatar} />
+                </View>
+                
             </View>
-            <View style = {styles.headerRight}>
-                <TouchableOpacity style ={ styles.noticationBtn}>
-                    <Text style = {styles.bellIcon}>🔔</Text>
-                    <View style={styles.notificationBadge}> <Text style={styles.notificationBadgeText}>3</Text> </View>
-                </TouchableOpacity>
-                <Image source={require('../assets/image/user.jpg')} style={styles.avatar} />
-            </View>
-            
-        </View>
-        {/* ================= STATISTICS ================= */}
-        <View style = {styles.section} >
-            <Text style={styles.sectionTitle}>THỐNG KÊ</Text>
-            <View style={styles.statisticsContainer}>
-                {statsData.map((item) => (
-                    <View key={item.id} style={styles.statCard}>
-                        <View style={[styles.statIconBox, { backgroundColor: item.bgColor }]}>
-                            <Text style={styles.statIcon}>{item.icon}</Text>
-                        </View>
-                        <Text style={styles.statValue}>{item.value}</Text>
-                        <Text style={styles.statLabel}>{item.title}</Text>
-                    </View>
-                ))}
-            </View>
-           
-        </View>
-
-        {/* ================= SEARCH ================= */}
-        <View style={styles.searchSection}>
-            <View style={styles.searchBar}>
-              <Text style={styles.searchIcon}>🔍</Text>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Tìm kiếm môn học, bài tập..."
-                placeholderTextColor="#94A3B8"
-                value={searchText}
-                onChangeText={setSearchText}
-              />
-            </View>
-            <TouchableOpacity style={styles.filterButton} activeOpacity={0.7}>
-              <Text style={styles.filterIcon}>⚙️</Text>
-            </TouchableOpacity>
-          </View>
-
-        {/*  DANH SÁCH MÔN HỌC */}
-        <Text style={styles.sectionTitle}>DANH SÁCH MÔN HỌC</Text>
-        <View style = {styles.courseList}>
-            {courses.map((course) => (
-                    <Pressable 
-                        key = {course.id} 
-                        style={({ pressed }) => [
-                            styles.courseCard,
-                            pressed && { opacity: 0.85 },
-                        ]}
-                    >
-                        {/* Icon môn học */}
-                        <View style={[styles.courseIconBox, { backgroundColor: course.iconBg }]}>
-                            <Text style={styles.courseIcon}>{course.icon}</Text>
-                        </View>
-                        {/* Thông tin môn học & Thanh tiến độ */}
-                        <View style = {styles.courseInfo}>
-                            <Text style = {styles.courseName} numberOfLines={1}>
-                                {course.name}
-                            </Text>
-                            <View style = {styles.courseMetaRow}>
-                                <Text style = {styles.courseMetaText}>{course.lessons} bài học </Text>
-                                <Text style = {styles.courseMetaText}>{course.completed}% hoàn thành</Text>
+            {/* ================= STATISTICS ================= */}
+            <View style = {styles.section} >
+                <Text style={styles.sectionTitle}>THỐNG KÊ</Text>
+                <View style={styles.statisticsContainer}>
+                    {statsData.map((item) => (
+                        <View key={item.id} style={styles.statCard}>
+                            <View style={[styles.statIconBox, { backgroundColor: item.bgColor }]}>
+                                <Ionicons name={item.iconName} size={22} color={item.iconColor} />
                             </View>
-                            {/* Thanh tiến độ */}
-                            <View style={styles.progressBarBackground}>
-                                <View
-                                style={[
-                                    styles.progressBarFill,
-                                    {
-                                    width: `${course.completed}%`,
-                                    backgroundColor: course.color,
-                                    },
-                                ]}
+                            <Text style={styles.statValue}>{item.value}</Text>
+                            <Text style={styles.statLabel}>{item.title}</Text>
+                        </View>
+                    ))}
+                </View>
+            
+            </View>
+
+            {/* ================= SEARCH ================= */}
+            <View style={styles.searchSection}>
+                <View style={styles.searchBar}>
+                <Ionicons name="search-outline" size={20} color="#94A3B8" style={styles.searchIcon} />
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Tìm kiếm môn học, bài tập..."
+                    placeholderTextColor="#94A3B8"
+                    value={searchText}
+                    onChangeText={setSearchText}
+                />
+                </View>
+                <TouchableOpacity style={styles.filterButton} activeOpacity={0.7}>
+                <Ionicons name="options-outline" size={22} color="#475569" />
+                </TouchableOpacity>
+            </View>
+
+            {/*  DANH SÁCH MÔN HỌC */}
+            <Text style={styles.sectionTitle}>DANH SÁCH MÔN HỌC</Text>
+            <FlatList data = {courses} keyExtractor={item => item.id} renderItem={({item}) =>(
+                        <Pressable 
+                            key = {item.id} 
+                            style={({ pressed }) => [
+                                styles.courseCard,
+                                pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] },
+                            ]}
+                        >
+                            {/* Icon môn học */}
+                            <View style={[styles.courseIconBox, { backgroundColor: item.iconBg }]}>
+                                <MaterialCommunityIcons
+                                    name={item.iconName}
+                                    size={28}
+                                    color={item.iconColor}
                                 />
                             </View>
-                        </View>
-                    </Pressable>
-                )
-
-            )}
-        </View>
-    </ScrollView>
-  );
+                            {/* Thông tin môn học & Thanh tiến độ */}
+                            <View style = {styles.courseInfo}>
+                                <Text style = {styles.courseName} numberOfLines={1}>
+                                    {item.name}
+                                </Text>
+                                <View style = {styles.courseMetaRow}>
+                                    <Text style = {styles.courseMetaText}>{item.lessons} bài học </Text>
+                                    <Text style = {styles.courseMetaText}>
+                                        {item.completed === 100 ? 'Đã hoàn thành' : `${item.completed}% hoàn thành`}
+                                    </Text>
+                                </View>
+                                {/* Thanh tiến độ */}
+                                <View style={styles.progressBarBackground}>
+                                    <View
+                                    style={[
+                                        styles.progressBarFill,
+                                        {
+                                        width: `${item.completed}%`,
+                                        backgroundColor: item.color,
+                                        },
+                                    ]}
+                                    />
+                                </View>
+                            </View>
+                        </Pressable>
+            )}/>
+        </ScrollView>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerLight: {
    flex: 1, 
    backgroundColor: '#F5F7FB',
+  },
+  containerDark:{
+    flex: 1, 
+    backgroundColor: '#111827',
   },
   contentContainer : {
     paddingHorizontal: 20, 
@@ -136,6 +155,20 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     gap: 12,
   },
+  themeBtn : {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   noticationBtn : {
     width: 42,
     height: 42,
@@ -149,9 +182,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 4,
     elevation: 2,
-  },
-  bellIcon :  {
-    fontSize: 18,
   },
   notificationBadge : {
     position: 'absolute', 

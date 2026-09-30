@@ -1,51 +1,56 @@
 
 interface Course {
-  id: number;
+  id: string;
   name: string;
   lessons: number;
   completed: number;
   color : string;
   iconBg : string;
-  icon: string;
+  iconName: string;
+  iconColor : string;
 }
 
 const courses: Course[] = [
   {
-    id: 1,
-    name: 'Lập trình hướng đối tượng',
-    lessons: 32,
-    completed: 85,
-    color: '#2B78E4',
-    iconBg: '#1E293B',
-    icon: '💻',
-  },
-  {
-    id: 2,
-    name: 'Cơ sở dữ liệu',
-    lessons: 28,
-    completed: 70,
-    color: '#F97316',
-    iconBg: '#FB923C',
-    icon: '🗄️',
-  },
-  {
-    id: 3,
-    name: 'Mạng máy tính',
-    lessons: 24,
-    completed: 55,
-    color: '#22C55E',
-    iconBg: '#334155',
-    icon: '🌐',
-  },
-  {
-    id: 4,
-    name: 'Phát triển ứng dụng di động',
-    lessons: 36,
-    completed: 40,
-    color: '#EAB308',
-    iconBg: '#FACC15',
-    icon: '📱',
-  },
+      id: '1',
+      name: 'Lập trình React Native',
+      lessons: 12,
+      completed: 100,
+      color: '#2B78E4',
+      iconBg: '#1E293B',
+      iconName: 'react',
+      iconColor: '#38BDF8',
+    },
+    {
+      id: '2',
+      name: 'Cơ sở dữ liệu SQL',
+      lessons: 15,
+      completed: 40,
+      color: '#F97316',
+      iconBg: '#FB923C',
+      iconName: 'database',
+      iconColor: '#1E293B',
+    },
+    {
+      id: '3',
+      name: 'Thiết kế UI/UX',
+      lessons: 10,
+      completed: 90,
+      color: '#22C55E',
+      iconBg: '#334155',
+      iconName: 'palette-swatch',
+      iconColor: '#F43F5E',
+    },
+    {
+      id: '4',
+      name: 'Lập trình Web (HTML, CSS)',
+      lessons: 14,
+      completed: 60,
+      color: '#EAB308',
+      iconBg: '#FACC15',
+      iconName: 'xml',
+      iconColor: '#1E293B',
+    },
 ];
 
 export default courses;

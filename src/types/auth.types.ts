@@ -1,0 +1,13 @@
+export type UserRole = "admin" | "user";
+
+export interface User {
+    id : string ;
+    username : string;
+    name : string;
+    role : UserRole;
+}
+
+export interface AuthSession{
+    user : User;
+    accessToken : string;
+}

@@ -13,16 +13,18 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { AuthProvider } from './src/context/AuthContext';
+import { AppNavigator } from './src/app/AppNavigator';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
-        <NavigationContainer>
-          <BottomTabNavigator/>
-        </NavigationContainer>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <AppNavigator/>
+        </ThemeProvider>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }
